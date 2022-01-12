@@ -3,7 +3,7 @@
     docker-compose build
     docker-compose up mariadb
     # Once mariadb says it's ready for connections, you can use ctrl + c to stop it
-    docker-compose run short-app rrails db:migrate
+    docker-compose run short-app rails db:migrate
     docker-compose -f docker-compose-test.yml build
 
 # To run migrations
