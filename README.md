@@ -30,3 +30,7 @@
 # Checking your short URL redirect
 
     curl -I localhost:3000/abc
+
+# About the shortening algorithm
+
+Shortened URL codes are generated using base62 encoding. Short codes should be alphanumeric and subject to grow in length as more short codes are created.

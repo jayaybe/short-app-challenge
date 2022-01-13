@@ -18,9 +18,13 @@ class ShortUrl < ApplicationRecord
     begin
       title = Nokogiri::HTML.parse(open(full_url)).title
       update(title: title)
-    rescue
+    rescue StandardError
       errors.add(:full_url, :invalid_url, "Unable to access URL")
     end
+  end
+
+  def as_json(options={})
+    super(methods: :short_code)
   end
 
   #pull these out into a helper?
@@ -44,7 +48,6 @@ class ShortUrl < ApplicationRecord
     code.to_s.each_char do |letter|
       num = (num * length) + CHARACTERS.index(letter)
     end
-    puts "#{code}, #{num}"
     num
   end
 
@@ -59,7 +62,8 @@ class ShortUrl < ApplicationRecord
     end
 
     begin
-      URI.parse(full_url)
+      uri = URI.parse(full_url)
+      errors.add(:full_url, :invalid_url, message: "Full url is not a valid url") if uri.host.to_s.blank?
     rescue
       errors.add(:full_url, :invalid_url, message: "is not a valid url")
     end
