@@ -27,6 +27,10 @@ class ShortUrl < ApplicationRecord
     super(methods: :short_code)
   end
 
+  def public_attributes
+    as_json
+  end
+
   #pull these out into a helper?
   def encode_url(num)
     return nil if num == nil
@@ -64,7 +68,7 @@ class ShortUrl < ApplicationRecord
     begin
       uri = URI.parse(full_url)
       errors.add(:full_url, :invalid_url, message: "Full url is not a valid url") if uri.host.to_s.blank?
-    rescue
+    rescue StandardError
       errors.add(:full_url, :invalid_url, message: "is not a valid url")
     end
   end
