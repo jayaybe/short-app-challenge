@@ -15,10 +15,8 @@ class ShortUrlsController < ApplicationController
     if (@short_url.errors.empty?)
       UpdateTitleJob.perform_later(@short_url.id)
       render json: @short_url, status: :created
-    elsif
-      # !!! -- find a way to unpack @short_url.errors.values into something rspec will recognize.
-      #render json: { :errors => "Full url is not a valid url"}, status: :bad_request
-      render json: { :errors => @short_url.errors.values }, status: :bad_request
+    else
+      render json: { :errors => @short_url.errors.values.flatten }, status: :bad_request
     end
   end
 
